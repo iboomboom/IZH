@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_resume"
+        android:title="个人简历"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_contacts"
+        app:showAsAction="never"
+        android:title="联系方式"/>
+
+    <item
+        android:id="@+id/search"
+        android:title="搜索"
+        app:showAsAction="always"
+        android:icon="@drawable/abc_ic_search_api_mtrl_alpha"/>
+
+
+</menu>

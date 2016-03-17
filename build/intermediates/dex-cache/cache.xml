@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/1a/dependencies.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="fb696b72f2702db77ab8b60ede7c8a864afba05f">
+        <dex dex="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/dex/debug/folders/1000/1a/dependencies_4004f1612c70bd394064e866474386e10c144416/classes.dex" />
+    </item>
+    <item
+        jar="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_slice.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="fd572d59ad12a4dc2b040eb5d396f132b869019b">
+        <dex dex="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_slice_e19e5ec3f9649ab8cc88f958124d2868ab543d64/classes.dex" />
+    </item>
+    <item
+        jar="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/instantRunSlicer/debug/jars/1/5/main_sliceb.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="ba5b2259e2bb2cbfc4de57338b066ef3ba67faf6">
+        <dex dex="/Users/mac/Downloads/MDDemo/app/build/intermediates/transforms/dex/debug/folders/1000/5/main_sliceb_cc956757330b7d4f20c887810eea7f611991f7c0/classes.dex" />
+    </item>
+
+</items>
