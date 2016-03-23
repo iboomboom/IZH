@@ -12,6 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="heiguang.com.mddemo.ui.GlideConfig"
+                   android:value="GlideMoudle"/>
         <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,6 +24,7 @@
 
         <activity android:name=".ui.activity.ResumeActivity"/>
         <activity android:name=".ui.activity.SearchActivity"/>
+        <activity android:name=".ui.activity.ImageActivity"/>
     </application>
 
 </manifest>

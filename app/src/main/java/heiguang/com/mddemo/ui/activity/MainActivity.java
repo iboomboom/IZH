@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
             case R.id.menu_contacts:
+                intent = new Intent(MainActivity.this,ImageActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.search:

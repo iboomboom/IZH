@@ -33,6 +33,7 @@ public class SearchActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
 

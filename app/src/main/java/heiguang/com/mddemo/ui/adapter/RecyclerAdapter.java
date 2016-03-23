@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import heiguang.com.mddemo.R;
 
@@ -37,7 +38,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Normal
     public void onBindViewHolder(NormalViewHolder holder, int position)
     {
 
-        Glide.with(context).load(imageUrls[position % 5]).centerCrop().crossFade().into(holder.imageView);
+        Glide.with(context).load(imageUrls[position % 5]).diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().crossFade().into(holder.imageView);
 //        holder.imageView.setImageResource(R.drawable.cheese_4);
     }
 

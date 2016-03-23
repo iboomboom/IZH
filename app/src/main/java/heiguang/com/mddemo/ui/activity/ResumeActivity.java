@@ -1,7 +1,17 @@
 package heiguang.com.mddemo.ui.activity;
 
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.renderscript.Allocation;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,6 +27,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import heiguang.com.mddemo.R;
 import heiguang.com.mddemo.ui.adapter.RecyclerAdapter;
@@ -41,6 +53,7 @@ public class ResumeActivity extends AppCompatActivity
         initView();
 
         addListener();
+
     }
 
 
@@ -62,8 +75,44 @@ public class ResumeActivity extends AppCompatActivity
         ctl.setTitle("马佳宁");
 
         //设置视差背景图
-        ImageView imageView = (ImageView) findViewById(R.id.image);
-        Glide.with(this).load("http://image.wufazhuce.com/FgFzVj6XM0PViWM-1srcGNxnBJmU").centerCrop().into(imageView);
+        final ImageView imageView = (ImageView) findViewById(R.id.image);
+
+
+//        blurImage(BitmapFactory.decodeResource(getResources(), R.drawable.cheese_4), imageView);
+
+        Glide.with(this).load("http://image.wufazhuce.com/FkmnU4eAKdDzdPTVIkTr10PYH-GA").asBitmap().into(new SimpleTarget<Bitmap>()
+        {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation)
+            {
+                blurImage(resource,imageView);
+            }
+        });
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void blurImage(final Bitmap resource, final ImageView imageView)
+    {
+        imageView.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Bitmap overlary = Bitmap.createBitmap(imageView.getMeasuredWidth(), imageView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(overlary);
+                canvas.drawBitmap(resource, -imageView.getLeft(), -imageView.getTop(), null);
+                RenderScript renderScript = RenderScript.create(ResumeActivity.this);
+                Allocation overlayAlloc = Allocation.createFromBitmap(renderScript, overlary);
+                ScriptIntrinsicBlur scriptIntrinsicBlur = ScriptIntrinsicBlur.create(renderScript, overlayAlloc.getElement());
+                scriptIntrinsicBlur.setInput(overlayAlloc);
+                scriptIntrinsicBlur.setRadius(10f);
+                scriptIntrinsicBlur.forEach(overlayAlloc);
+                overlayAlloc.copyTo(overlary);
+                imageView.setImageDrawable(new BitmapDrawable(overlary));
+                renderScript.destroy();
+            }
+        });
+
 
     }
 
