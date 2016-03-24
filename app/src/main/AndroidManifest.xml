@@ -26,8 +26,8 @@
         <activity android:name=".ui.activity.ResumeActivity"/>
         <activity android:name=".ui.activity.SearchActivity"/>
         <activity android:name=".ui.activity.MainActivity"/>
-        <activity
-            android:name=".ui.activity.Main2Activity"/>
+        <activity android:name=".ui.activity.Main2Activity"/>
+        <activity android:name=".ui.activity.WebActivity"/>
     </application>
 
 </manifest>

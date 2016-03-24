@@ -84,7 +84,7 @@ public class SplashActivity extends BaseActivity
      */
     public ScaleAnimation getAnimation()
     {
-        ScaleAnimation mAnimation = new ScaleAnimation(1f,1.05f,1f,1.05f);
+        ScaleAnimation mAnimation = new ScaleAnimation(1f,1.05f,1f,1.05f,0.5f,0.5f);
         mAnimation.setDuration(3000);
         mAnimation.setFillAfter(true);
         mAnimation.setAnimationListener(new Animation.AnimationListener()

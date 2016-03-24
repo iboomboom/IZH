@@ -5,6 +5,7 @@ package heiguang.com.mddemo.http;
  */
 public class Consts
 {
+
     public static String URL = "http://news-at.zhihu.com/api/4/";
 
     /**
@@ -21,6 +22,11 @@ public class Consts
      * 首页推荐的新闻 加载更多
      */
     public static String BEFORE = "stories/before/";
+
+    /**
+     * 新闻详情
+     */
+    public static final String STORY = "story/";
 
 
 }

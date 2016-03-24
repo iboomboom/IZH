@@ -83,6 +83,7 @@ public class Main2Activity extends BaseActivity
                 SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
                 String date = mFormat.format(new Date(System.currentTimeMillis()-24*60*60*1000));
                 HttpHelper.getInstance().getAsyn(Consts.BEFORE+date,dailyCallback);
+
             }
         });
     }

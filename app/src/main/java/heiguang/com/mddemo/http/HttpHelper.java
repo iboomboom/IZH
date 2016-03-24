@@ -49,5 +49,19 @@ public class HttpHelper
 
     }
 
+    public void getAsyn(final String url, String key,final BaseCallback callback)
+    {
+        ThreadManager.getLongPool().execute(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Request mRequst = new Request.Builder().url(url).build();
+                Call call = mClient.newCall(mRequst);
+                call.enqueue(callback);
+            }
+        });
+    }
+
 
 }
