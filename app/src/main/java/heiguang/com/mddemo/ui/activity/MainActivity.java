@@ -14,11 +14,17 @@ import android.view.MenuItem;
 import heiguang.com.mddemo.R;
 import heiguang.com.mddemo.ui.adapter.ViewPagerAdapter;
 import heiguang.com.mddemo.ui.fragment.ZuopinFragment;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * 我的作品集
+ *
+ * 这个类已经过时
+ * @see Main2Activity
  */
-public class MainActivity extends AppCompatActivity
+@Deprecated
+public class MainActivity extends BaseActivity
 {
 
     private TabLayout tabLayout;
@@ -32,18 +38,20 @@ public class MainActivity extends AppCompatActivity
 
         initToolbar();
         initView();
+
     }
 
-    private void initToolbar()
+    public void initToolbar()
     {
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toobar);
 
-        toolbar.setTitle("我的作品集");
+        toolbar.setTitle("知乎日报");
         setSupportActionBar(toolbar);
+
     }
 
-    private void initView()
+    public void initView()
     {
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         viewPager = (ViewPager) findViewById(R.id.vp);
@@ -64,15 +72,16 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
+    public void initMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+        super.initMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main,menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public void onMenuItemClickListener(MenuItem item)
     {
         Intent intent;
 
@@ -82,16 +91,18 @@ public class MainActivity extends AppCompatActivity
                 intent = new Intent(MainActivity.this,ResumeActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_contacts:
-                intent = new Intent(MainActivity.this,ImageActivity.class);
-                startActivity(intent);
-                break;
 
             case R.id.search:
                 intent = new Intent(MainActivity.this,SearchActivity.class);
                 startActivity(intent);
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        super.onMenuItemClickListener(item);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        System.exit(0);
     }
 }
