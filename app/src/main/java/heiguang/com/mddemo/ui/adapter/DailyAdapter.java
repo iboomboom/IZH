@@ -1,6 +1,7 @@
 package heiguang.com.mddemo.ui.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,27 +19,35 @@ import heiguang.com.mddemo.ui.activity.WebActivity;
 /**
  * Created by hiviiup on 16/3/24.
  */
-public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity,DailyAdapter.DailyViewHolder>
+public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity>
 {
 
-    public DailyAdapter(Activity activity)
+    public DailyAdapter(Context mContext, boolean isLoadMore)
     {
-        super(activity);
+        super(mContext, isLoadMore);
     }
 
     @Override
     public DailyViewHolder createMyViewHolder(ViewGroup parent, int viewType)
     {
-        return new DailyViewHolder(View.inflate(mActivity, R.layout.list_item_daily,null));
+        return new DailyViewHolder(View.inflate(mContext, R.layout.list_item_daily, null));
     }
 
     @Override
-    protected void bindData(DailyViewHolder dailyViewHolder, int position)
+    protected void bindData(RecyclerView.ViewHolder holder, int position)
     {
-        dailyViewHolder.textView.setText(getObject(position).getTitle());
-        Glide.with(mActivity).load(getObject(position).getImages().get(0)).centerCrop().crossFade().into(dailyViewHolder.imageView);
+        if (getObject(position).getImages().size() == 0)
+        {
+            ((DailyViewHolder) holder).imageView.setVisibility(View.GONE);
+        } else
+        {
+            ((DailyViewHolder) holder).imageView.setVisibility(View.VISIBLE);
+            Glide.with(mContext).load(getObject(position).getImages().get(0)).centerCrop().crossFade().into(((DailyViewHolder) holder).imageView);
+        }
 
-        addListener(dailyViewHolder,position);
+        ((DailyViewHolder) holder).textView.setText(getObject(position).getTitle());
+        addListener(((DailyViewHolder) holder), position);
+
     }
 
     private void addListener(DailyViewHolder dailyViewHolder, final int position)
@@ -48,29 +57,20 @@ public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity,DailyAdapt
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(mActivity,WebActivity.class);
-                intent.putExtra("id",getObject(position).getId());
-                intent.putExtra("title",getObject(position).getTitle());
-                mActivity.startActivity(intent);
-            }
-        });
-
-        dailyViewHolder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View v)
-            {
-                return true;
+                Intent intent = new Intent(mContext, WebActivity.class);
+                intent.putExtra("id", getObject(position).getId());
+                intent.putExtra("title", getObject(position).getTitle());
+                mContext.startActivity(intent);
             }
         });
     }
-
 
     public class DailyViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imageView;
         TextView textView;
         RelativeLayout relativeLayout;
+
         public DailyViewHolder(View itemView)
         {
             super(itemView);
@@ -79,6 +79,5 @@ public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity,DailyAdapt
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.ll);
         }
     }
-
 
 }

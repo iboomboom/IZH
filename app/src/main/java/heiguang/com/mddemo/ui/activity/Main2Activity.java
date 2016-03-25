@@ -6,12 +6,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +22,6 @@ import heiguang.com.mddemo.http.Consts;
 import heiguang.com.mddemo.http.HttpHelper;
 import heiguang.com.mddemo.ui.adapter.DailyAdapter;
 import heiguang.com.mddemo.ui.view.CBSwipeRefreshLayout;
-import heiguang.com.mddemo.ui.view.DividerItemDecoration;
 
 public class Main2Activity extends BaseActivity
 {
@@ -32,6 +30,11 @@ public class Main2Activity extends BaseActivity
     private DailyAdapter mAdapter;
     private CBSwipeRefreshLayout mRefresh;
     private BaseCallback dailyCallback;
+
+    int page = 0;
+    //获取当前日期
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
+    String curDate = mFormat.format(new Date(System.currentTimeMillis()));
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,8 +51,6 @@ public class Main2Activity extends BaseActivity
     }
 
 
-
-
     @Override
     public void initToolbar()
     {
@@ -64,9 +65,19 @@ public class Main2Activity extends BaseActivity
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(Main2Activity.this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(Main2Activity.this, DividerItemDecoration.VERTICAL_LIST));
 
-        mAdapter = new DailyAdapter(Main2Activity.this);
+        mAdapter = new DailyAdapter(Main2Activity.this, true)
+        {
+            @Override
+            public void onLoadMoreListener()
+            {
+                //加载获取前一天的数据
+                String beforeDate = mFormat.format(new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000 * page));
+                Toast.makeText(Main2Activity.this, beforeDate, Toast.LENGTH_SHORT).show();
+                HttpHelper.getInstance().getAsyn(Consts.BEFORE + beforeDate, dailyCallback);
+            }
+        };
+        mAdapter.configLoadListener(mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
 
         mRefresh = (CBSwipeRefreshLayout) findViewById(R.id.refresh);
@@ -79,21 +90,12 @@ public class Main2Activity extends BaseActivity
             @Override
             public void onRefresh()
             {
-                //刷新获取前一天的数据
-                SimpleDateFormat mFormat = new SimpleDateFormat("yyyyMMdd");
-                String date = mFormat.format(new Date(System.currentTimeMillis()-24*60*60*1000));
-                HttpHelper.getInstance().getAsyn(Consts.BEFORE+date,dailyCallback);
-
+                HttpHelper.getInstance().getAsyn(Consts.LASTEST,dailyCallback);
             }
         });
+
     }
 
-    @Override
-    public void initMenu(Menu menu)
-    {
-        super.initMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_main,menu);
-    }
 
     private void bindData()
     {
@@ -103,20 +105,32 @@ public class Main2Activity extends BaseActivity
             public void onSuccess(String response)
             {
                 Gson gson = new Gson();
-                NewDailys mNewDailys = gson.fromJson(response,NewDailys.class);
-                mAdapter.addAll(mNewDailys.getStories());
-                mAdapter.notifyDataSetChanged();
+                NewDailys mNewDailys = gson.fromJson(response, NewDailys.class);
 
-                if (mRefresh.isRefreshing())
-                {
+                if (curDate.equals(mNewDailys.getDate()))
+                {//刷新或者刚进来的时候
+                    mAdapter.addAll(mNewDailys.getStories());
                     mRefresh.setRefreshing(false);
+                } else
+                {//加载之前数据的时候
+                    for (NewDailys.StoriesEntity storiesEntity : mNewDailys.getStories())
+                    {
+                        mAdapter.addObject(storiesEntity);
+                    }
+                    page++;
                 }
+                mAdapter.notifyDataSetChanged();
             }
         };
         HttpHelper.getInstance().getAsyn(Consts.LASTEST, dailyCallback);
     }
 
-
+    @Override
+    public void initMenu(Menu menu)
+    {
+        super.initMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+    }
 
     @Override
     public void onBackPressed()
