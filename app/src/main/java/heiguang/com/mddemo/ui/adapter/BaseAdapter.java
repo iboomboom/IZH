@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,12 @@ public abstract class BaseAdapter<T,K extends RecyclerView.ViewHolder> extends R
 {
 
     public Activity mActivity;
-    private List<T> datas = new ArrayList<>();
+    private List<T> datas ;
 
     public BaseAdapter(Activity activity)
     {
         this.mActivity = activity;
+        this.datas = new ArrayList<>();
     }
 
     public void addObject(T t)

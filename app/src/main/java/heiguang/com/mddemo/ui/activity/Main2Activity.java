@@ -100,7 +100,7 @@ public class Main2Activity extends BaseActivity
         dailyCallback = new BaseCallback(Main2Activity.this)
         {
             @Override
-            public void onSuccess(String response) throws JSONException
+            public void onSuccess(String response)
             {
                 Gson gson = new Gson();
                 NewDailys mNewDailys = gson.fromJson(response,NewDailys.class);
