@@ -1,6 +1,5 @@
 package heiguang.com.mddemo.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +35,7 @@ public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity>
     @Override
     protected void bindData(RecyclerView.ViewHolder holder, int position)
     {
+        super.bindData(holder,position);
         if (getObject(position).getImages().size() == 0)
         {
             ((DailyViewHolder) holder).imageView.setVisibility(View.GONE);
@@ -46,23 +46,17 @@ public class DailyAdapter extends BaseAdapter<NewDailys.StoriesEntity>
         }
 
         ((DailyViewHolder) holder).textView.setText(getObject(position).getTitle());
-        addListener(((DailyViewHolder) holder), position);
 
     }
 
-    private void addListener(DailyViewHolder dailyViewHolder, final int position)
+    @Override
+    public void onItemClickListener(int position)
     {
-        dailyViewHolder.relativeLayout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(mContext, WebActivity.class);
-                intent.putExtra("id", getObject(position).getId());
-                intent.putExtra("title", getObject(position).getTitle());
-                mContext.startActivity(intent);
-            }
-        });
+        super.onItemClickListener(position);
+        Intent intent = new Intent(mContext, WebActivity.class);
+        intent.putExtra("id", getObject(position).getId());
+        intent.putExtra("title", getObject(position).getTitle());
+        mContext.startActivity(intent);
     }
 
     public class DailyViewHolder extends RecyclerView.ViewHolder
